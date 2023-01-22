@@ -7,6 +7,7 @@ Plug "habamax/vim-saturnite"
 Plug "lunarvim/darkplus.nvim"
 Plug "rmehri01/onenord.nvim"
 Plug "folke/tokyonight.nvim"
+Plug "getomni/neovim"
 
 --misc
 Plug "junegunn/vim-plug"
