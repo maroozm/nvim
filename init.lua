@@ -10,7 +10,7 @@ local options = {
   hlsearch = true,                         
   ignorecase = true,                       
   mouse = "a",                             
-  pumheight = 10,                          
+  pumheight = 1,                          
   showmode = false,                        
   showtabline = 2,                         
   smartcase = true,                        
@@ -19,7 +19,7 @@ local options = {
   splitright = true,                       
   swapfile = false,                        
   termguicolors = true,                    
-  timeoutlen = 100,                        
+  timeoutlen = 500,                        
   undofile = true,                         
   updatetime = 300,                        
   writebackup = false,                     
@@ -52,6 +52,11 @@ end
 -- -------
 local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
+--filemanager
+Plug 'nvim-tree/nvim-tree.lua'
+--lualine
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 --themes
 Plug "habamax/vim-saturnite"
 Plug "lunarvim/darkplus.nvim"
@@ -89,6 +94,40 @@ if not status_ok then
   return
 end
 
+-- Lualine
+----------
+local diagnostics = {
+  "diagnostics",
+  sources = { "nvim_diagnostic" },
+  sections = { "error", "warn" },
+  symbols = { error = " ", warn = " " },
+  colored = false,
+  always_visible = true,
+}
+local filetype = {
+  "filetype",
+  icons_enabled = false,
+}
+
+require('lualine').setup {
+  options = {
+     globalstatus = true,
+    icons_enabled = true,
+    component_separators = { left = "", right = "" },
+    section_separators = { left = "", right = "" },
+    disabled_filetypes = { "alpha", "dashboard" },
+    always_divide_middle = true,
+    theme  = 'omni' 
+  },
+   sections = {
+    lualine_a = { "mode" },
+    lualine_b = { "branch" },
+    lualine_c = { diagnostics },
+    lualine_x = { diff, spaces, "encoding", filetype },
+    lualine_y = { location },
+    lualine_z = { "progress" },
+  },
+}
 
 -- Telescope config
 --------------
@@ -104,3 +143,31 @@ require('telescope').setup {
   }
 }
 pcall(require('telescope').load_extension, 'fzf')
+
+-- Netrw config
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    width = 30,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
+
+-- Keymaps
+----------
+vim.keymap.set('n', '<leader>ff', ':Telescope find_files<cr>')
+vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>w', ':NvimTreeToggle<cr>')
