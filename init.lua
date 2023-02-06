@@ -63,6 +63,7 @@ Plug "lunarvim/darkplus.nvim"
 Plug "rmehri01/onenord.nvim"
 Plug "folke/tokyonight.nvim"
 Plug "getomni/neovim"
+Plug "olivercederborg/poimandres.nvim"
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
@@ -87,12 +88,19 @@ vim.call('plug#end')
 
 -- Colorscheme
 --------------
-local colorscheme = "omni"
+local colorscheme = "poimandres"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
   return
 end
+require('poimandres').setup {
+  bold_vert_split = false, -- use bold vertical separators
+  dim_nc_background = false, -- dim 'non-current' window backgrounds
+  disable_background = false, -- disable background
+  disable_float_background = false, -- disable background for floats
+  disable_italics = false, -- disable italics
+}
 
 -- Lualine
 ----------
@@ -117,7 +125,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'omni' 
+    theme  = 'poimandres' 
   },
    sections = {
     lualine_a = { "mode" },
