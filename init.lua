@@ -88,7 +88,7 @@ vim.call('plug#end')
 
 -- Colorscheme
 --------------
-local colorscheme = "poimandres"
+local colorscheme = "omni"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -125,7 +125,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'poimandres' 
+    theme  = 'omni' 
   },
    sections = {
     lualine_a = { "mode" },
