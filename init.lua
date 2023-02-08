@@ -64,12 +64,14 @@ Plug "rmehri01/onenord.nvim"
 Plug "folke/tokyonight.nvim"
 Plug "getomni/neovim"
 Plug "olivercederborg/poimandres.nvim"
+Plug "lunarvim/lunar.nvim"
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
 Plug "tpope/vim-commentary"
 Plug "karb94/neoscroll.nvim"
 Plug "nvim-treesitter/nvim-treesitter"
+Plug "folke/which-key.nvim"
 --gitsigns
 Plug "lewis6991/gitsigns.nvim"
 --completions
@@ -88,7 +90,7 @@ vim.call('plug#end')
 
 -- Colorscheme
 --------------
-local colorscheme = "omni"
+local colorscheme = "lunar"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -125,7 +127,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'omni' 
+    theme  = 'lunar' 
   },
    sections = {
     lualine_a = { "mode" },
@@ -174,8 +176,23 @@ require("nvim-tree").setup({
   },
 })
 
+-- Plugins setups
+-----------------
+require("which-key").setup { }
+require'cmp'.setup {
+  sources = {
+    { name = 'path' },
+    { name = "buffer" },
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+}
+
 -- Keymaps
 ----------
 vim.keymap.set('n', '<leader>ff', ':Telescope find_files<cr>')
 vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>k', ':WhichKey<cr>')
 vim.keymap.set('n', '<leader>w', ':NvimTreeToggle<cr>')
