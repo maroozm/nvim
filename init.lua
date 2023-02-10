@@ -90,7 +90,7 @@ vim.call('plug#end')
 
 -- Colorscheme
 --------------
-local colorscheme = "lunar"
+local colorscheme = "omni"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -183,10 +183,6 @@ require'cmp'.setup {
   sources = {
     { name = 'path' },
     { name = "buffer" },
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
   },
 }
 
