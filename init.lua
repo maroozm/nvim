@@ -10,7 +10,7 @@ local options = {
   hlsearch = true,                         
   ignorecase = true,                       
   mouse = "a",                             
-  pumheight = 1,                          
+  pumheight = 10,                          
   showmode = false,                        
   showtabline = 2,                         
   smartcase = true,                        
@@ -58,10 +58,8 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 --themes
-Plug "habamax/vim-saturnite"
+Plug 'shaunsingh/nord.nvim'
 Plug "lunarvim/darkplus.nvim"
-Plug "rmehri01/onenord.nvim"
-Plug "folke/tokyonight.nvim"
 Plug "getomni/neovim"
 Plug "olivercederborg/poimandres.nvim"
 Plug "lunarvim/lunar.nvim"
@@ -90,7 +88,18 @@ vim.call('plug#end')
 
 -- Colorscheme
 --------------
-local colorscheme = "omni"
+-- Example config in lua
+vim.g.nord_contrast = true
+vim.g.nord_borders = false
+vim.g.nord_disable_background = false
+vim.g.nord_italic = false
+vim.g.nord_uniform_diff_background = true
+vim.g.nord_bold = true
+
+-- Load the colorscheme
+require('nord').set()
+
+local colorscheme = "nord"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -127,7 +136,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'omni' 
+    theme  = 'nord' 
   },
    sections = {
     lualine_a = { "mode" },
