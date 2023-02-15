@@ -63,6 +63,7 @@ Plug "lunarvim/darkplus.nvim"
 Plug "getomni/neovim"
 Plug "olivercederborg/poimandres.nvim"
 Plug "lunarvim/lunar.nvim"
+Plug "gs/muon-dark"
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
@@ -101,7 +102,7 @@ vim.g.nord_bold = true
 -- Load the colorscheme
 require('nord').set()
 
-local colorscheme = "nord"
+local colorscheme = "poimandres"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -138,7 +139,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'nord' 
+    theme  = 'poimandres' 
   },
    sections = {
     lualine_a = { "mode" },
