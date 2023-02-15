@@ -73,6 +73,7 @@ Plug "folke/which-key.nvim"
 --gitsigns
 Plug "lewis6991/gitsigns.nvim"
 --completions
+Plug "L3MON4D3/LuaSnip"
 Plug "hrsh7th/nvim-cmp"
 Plug "hrsh7th/cmp-buffer"
 Plug "hrsh7th/cmp-path"
@@ -84,6 +85,7 @@ Plug 'numToStr/Comment.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug('nvim-telescope/telescope-fzf-native.nvim', {['do'] = vim.fn['make']})
+Plug 'smartpde/telescope-recent-files'
 vim.call('plug#end')
 
 -- Colorscheme
@@ -162,6 +164,7 @@ require('telescope').setup {
   }
 }
 pcall(require('telescope').load_extension, 'fzf')
+require("telescope").load_extension("recent_files")
 
 -- Netrw config
 vim.g.loaded_netrw = 1
@@ -187,9 +190,39 @@ require("nvim-tree").setup({
 
 -- Plugins setups
 -----------------
+local cmp = require'cmp'
 require("which-key").setup { }
+local wk = require("which-key")
+
+wk.register({
+  ["<leader>f"] = { name = "Telescope" },
+  ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find File" },
+  ["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", "Search through files" },
+  ["<leader>fr"] = { "<cmd>lua require('telescope').extensions.recent_files.pick()<cr>", "Open Recent File" },
+  ["<leader>fn"] = { "<cmd>enew<cr>", "New File" },
+  ["<leader>w"] = { "<cmd>NvimTreeToggle<cr>", "File Manager" },
+  ["<leader>c"] = { "<cmd>Commentary<cr>", "Comment Lines" },
+})
+
 require'cmp'.setup {
+  snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+     mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
   sources = {
+    { name = luasnip },
     { name = 'path' },
     { name = "buffer" },
   },
@@ -197,7 +230,5 @@ require'cmp'.setup {
 
 -- Keymaps
 ----------
-vim.keymap.set('n', '<leader>ff', ':Telescope find_files<cr>')
-vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<cr>')
-vim.keymap.set('n', '<leader>k', ':WhichKey<cr>')
-vim.keymap.set('n', '<leader>w', ':NvimTreeToggle<cr>')
+local opts = { noremap = true, silent = true }
+-- vim.keymap.set('n', '<leader>ff', '[[<cmd>Telescope find_files<cr>]]', opts)
