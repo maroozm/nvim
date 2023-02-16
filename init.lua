@@ -1,6 +1,9 @@
 -- Options
 ----------
 local options = {
+  pumblend = 17,
+  wildmode = "longest:full",
+  wildoptions = "pum",
   backup = false,                          
   clipboard = "unnamedplus",               
 --  cmdheight = 2,                         
@@ -13,7 +16,7 @@ local options = {
   pumheight = 10,                          
   showmode = false,                        
   showtabline = 2,                         
-  smartcase = true,                        
+  smartcase = true,      
   smartindent = true,                      
   splitbelow = true,                       
   splitright = true,                       
@@ -29,7 +32,7 @@ local options = {
   cursorline = true,                       
   number = true,                           
   laststatus = 3,
-  relativenumber = false,                  
+  relativenumber = true,                  
   numberwidth = 4,                         
   signcolumn = "yes",                      
   wrap = true,                            
@@ -47,6 +50,19 @@ vim.opt.shortmess:append "c"
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
+local group = vim.api.nvim_create_augroup("CursorLineControl", { clear = true })
+local set_cursorline = function(event, value, pattern)
+  vim.api.nvim_create_autocmd(event, {
+    group = group,
+    pattern = pattern,
+    callback = function()
+      vim.opt_local.cursorline = value
+    end,
+  })
+end
+set_cursorline("WinLeave", false)
+set_cursorline("WinEnter", true)
+set_cursorline("FileType", false, "TelescopePrompt")
 
 -- Plugins
 -- -------
@@ -200,6 +216,7 @@ wk.register({
   ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find File" },
   ["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", "Search through files" },
   ["<leader>fr"] = { "<cmd>lua require('telescope').extensions.recent_files.pick()<cr>", "Open Recent File" },
+  ["<leader>fc"] = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
   ["<leader>fn"] = { "<cmd>enew<cr>", "New File" },
   ["<leader>w"] = { "<cmd>NvimTreeToggle<cr>", "File Manager" },
   ["<leader>c"] = { "<cmd>Commentary<cr>", "Comment Lines" },
