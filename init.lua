@@ -15,7 +15,7 @@ local options = {
   mouse = "a",                             
   pumheight = 10,                          
   showmode = false,                        
-  showtabline = 2,                         
+ -- showtabline = 2,                         
   smartcase = true,      
   smartindent = true,                      
   splitbelow = true,                       
@@ -138,18 +138,22 @@ local diagnostics = {
   "diagnostics",
   sources = { "nvim_diagnostic" },
   sections = { "error", "warn" },
-  symbols = { error = " ", warn = " " },
+  symbols = { error = " ", warn = " " },
   colored = false,
-  always_visible = true,
+  always_visible = false,
 }
 local filetype = {
   "filetype",
   icons_enabled = false,
 }
 
+local filename = {
+  "filename",
+  path = 3,
+}
 require('lualine').setup {
   options = {
-     globalstatus = true,
+    globalstatus = true,
     icons_enabled = true,
     component_separators = { left = "", right = "" },
     section_separators = { left = "", right = "" },
@@ -160,8 +164,8 @@ require('lualine').setup {
    sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch" },
-    lualine_c = { diagnostics },
-    lualine_x = { diff, spaces, "encoding", filetype },
+    lualine_c = { diagnostics, filename},
+    lualine_x = { 'diff', filetype },
     lualine_y = { location },
     lualine_z = { "progress" },
   },
