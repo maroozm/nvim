@@ -1,9 +1,42 @@
+-- Setup augroup to make this config reloadable at runtime
+local init_lua_augroup = vim.api.nvim_create_augroup('init.lua', {})
+-- Define some helper functions
+local function makeAutocommandOpts(vim_command_or_lua_callback)
+  if type(vim_command_or_lua_callback) == 'string' then
+    return { command = vim_command_or_lua_callback }
+  else
+    return { callback = vim_command_or_lua_callback }
+  end
+end
+local function addAutocommand(events, pattern, vim_command_or_lua_callback)
+  local opts = makeAutocommandOpts(vim_command_or_lua_callback)
+  vim.api.nvim_create_autocmd(events, vim.fn.extend(opts, {
+    pattern = pattern,  group = init_lua_augroup
+  }))
+end
+local function addFiletypeAutocommand(filetype, vim_command_or_lua_callback)
+  addAutocommand('FileType', filetype, vim_command_or_lua_callback)
+end
+local function addBufferAutocommand(events, vim_command_or_lua_callback)
+  local opts = makeAutocommandOpts(vim_command_or_lua_callback)
+  vim.api.nvim_create_autocmd(events, vim.fn.extend(opts, { buffer = 0 }))
+end
+local function mapToCommand(keys, vim_command)
+  vim.keymap.set('n', keys, function()
+    vim.api.nvim_command(vim_command)
+  end, { silent = true })
+end
+
+-- Reload this config when it's saved to disk
+local init_lua_path = vim.fn.stdpath('config') .. '/init.lua'
+addAutocommand('BufWritePost', init_lua_path, function() dofile(init_lua_path) end)
+
 -- Options
 ----------
 local options = {
-  pumblend = 17,
-  wildmode = "longest:full",
-  wildoptions = "pum",
+  -- pumblend = 17,
+  -- wildmode = "longest:full",
+  -- wildoptions = "pum",
   backup = false,                          
   clipboard = "unnamedplus",               
 --  cmdheight = 2,                         
@@ -96,15 +129,23 @@ Plug "L3MON4D3/LuaSnip"
 Plug "hrsh7th/nvim-cmp"
 Plug "hrsh7th/cmp-buffer"
 Plug "hrsh7th/cmp-path"
+Plug 'hrsh7th/cmp-cmdline'
 Plug "saadparwaiz1/cmp_luasnip"
 Plug "hrsh7th/cmp-nvim-lua"
 --comment
 Plug 'numToStr/Comment.nvim'
+--lsp 
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
 --fuzzyfinder
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug('nvim-telescope/telescope-fzf-native.nvim', {['do'] = vim.fn['make']})
 Plug 'smartpde/telescope-recent-files'
+
+Plug 'rebelot/heirline.nvim'
 vim.call('plug#end')
 
 -- Colorscheme
@@ -120,7 +161,7 @@ vim.g.nord_bold = true
 -- Load the colorscheme
 require('nord').set()
 
-local colorscheme = "arctic"
+local colorscheme = "lunar"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -161,7 +202,7 @@ require('lualine').setup {
     section_separators = { left = "", right = "" },
     disabled_filetypes = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'darkplus' 
+    theme  = 'lunar' 
   },
    sections = {
     lualine_a = { "mode" },
@@ -230,29 +271,53 @@ wk.register({
 
 require'cmp'.setup {
   snippet = {
-      -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
          require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
+    },
+     window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
      mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
   sources = {
-    { name = luasnip },
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
     { name = 'path' },
     { name = "buffer" },
-  },
+    { name = "nvim_lua" },
+  }
 }
+
+-- LSP
+----------
+---- Set up lspconfig.
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['clangd'].setup {
+    capabilities = capabilities
+  }
+  require'lspconfig'.lua_ls.setup { }
+require("mason").setup()
+-- require("mason-lspconfig").setup()
+-- local servers = { 'pyright', 'lua_ls' }
+-- for _, lsp in pairs(servers) do
+--     require('lspconfig')[lsp].setup {
+--         on_attach = on_attach,
+--         flags = {
+--           debounce_text_changes = 150,
+--         }
+--     }
+-- end
 
 -- Keymaps
 ----------
 local opts = { noremap = true, silent = true }
 -- vim.keymap.set('n', '<leader>ff', '[[<cmd>Telescope find_files<cr>]]', opts)
+--vim.command(inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>")
