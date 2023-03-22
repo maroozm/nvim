@@ -11,7 +11,7 @@ end
 local function addAutocommand(events, pattern, vim_command_or_lua_callback)
   local opts = makeAutocommandOpts(vim_command_or_lua_callback)
   vim.api.nvim_create_autocmd(events, vim.fn.extend(opts, {
-    pattern = pattern,  group = init_lua_augroup
+    pattern = pattern, group = init_lua_augroup
   }))
 end
 local function addFiletypeAutocommand(filetype, vim_command_or_lua_callback)
@@ -37,46 +37,43 @@ local options = {
   -- pumblend = 17,
   -- wildmode = "longest:full",
   -- wildoptions = "pum",
-  backup = false,                          
-  clipboard = "unnamedplus",               
---  cmdheight = 2,                         
-  completeopt = { "menuone", "noselect" }, 
-  conceallevel = 0,                        
-  fileencoding = "utf-8",                  
-  hlsearch = true,                         
-  ignorecase = true,                       
-  mouse = "a",                             
-  pumheight = 10,                          
-  showmode = false,                        
- -- showtabline = 2,                         
-  smartcase = true,      
-  smartindent = true,                      
-  splitbelow = true,                       
-  splitright = true,                       
-  swapfile = false,                        
-  termguicolors = true,                    
-  timeoutlen = 500,                        
-  undofile = true,                         
-  updatetime = 300,                        
-  writebackup = false,                     
-  expandtab = true,                        
-  shiftwidth = 2,                          
-  tabstop = 2,                             
-  cursorline = true,                       
-  number = true,                           
+  backup = false,
+  clipboard = "unnamedplus",
+  --  cmdheight = 2,
+  completeopt = { "menuone", "noselect" },
+  conceallevel = 0,
+  fileencoding = "utf-8",
+  hlsearch = true,
+  ignorecase = true,
+  mouse = "a",
+  pumheight = 10,
+  showmode = false,
+  -- showtabline = 2,
+  smartcase = true,
+  smartindent = true,
+  splitbelow = true,
+  splitright = true,
+  swapfile = false,
+  termguicolors = true,
+  timeoutlen = 500,
+  undofile = true,
+  updatetime = 300,
+  writebackup = false,
+  expandtab = true,
+  shiftwidth = 2,
+  tabstop = 2,
+  cursorline = true,
+  number = true,
   laststatus = 3,
-  relativenumber = true,                  
-  numberwidth = 4,                         
-  signcolumn = "yes",                      
-  wrap = true,                            
-  scrolloff = 8,                           
+  relativenumber = true,
+  numberwidth = 4,
+  signcolumn = "yes",
+  wrap = true,
+  scrolloff = 8,
   sidescrolloff = 8,
-  guifont = "monospace:h17",               
-
+  guifont = "monospace:h17",
 }
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.fillchars.eob=" "
+vim.opt.fillchars.eob = " "
 -- use space as leader key
 vim.g.mapleader = " "
 vim.opt.shortmess:append "c"
@@ -115,6 +112,7 @@ Plug "lunarvim/lunar.nvim"
 Plug "gs/muon-dark"
 Plug 'rktjmp/lush.nvim'
 Plug 'rockyzhang24/arctic.nvim'
+Plug 'wuelnerdotexe/vim-enfocado'
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
@@ -134,7 +132,7 @@ Plug "saadparwaiz1/cmp_luasnip"
 Plug "hrsh7th/cmp-nvim-lua"
 --comment
 Plug 'numToStr/Comment.nvim'
---lsp 
+--lsp
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -142,7 +140,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 --fuzzyfinder
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug('nvim-telescope/telescope-fzf-native.nvim', {['do'] = vim.fn['make']})
+Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = vim.fn['make'] })
 Plug 'smartpde/telescope-recent-files'
 
 Plug 'rebelot/heirline.nvim'
@@ -161,7 +159,7 @@ vim.g.nord_bold = true
 -- Load the colorscheme
 require('nord').set()
 
-local colorscheme = "lunar"
+local colorscheme = "enfocado"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -196,18 +194,18 @@ local filename = {
 }
 require('lualine').setup {
   options = {
-    globalstatus = true,
-    icons_enabled = true,
+    globalstatus         = true,
+    icons_enabled        = true,
     component_separators = { left = "", right = "" },
-    section_separators = { left = "", right = "" },
-    disabled_filetypes = { "alpha", "dashboard" },
+    section_separators   = { left = "", right = "" },
+    disabled_filetypes   = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme  = 'lunar' 
+    theme                = 'enfocado'
   },
-   sections = {
+  sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch" },
-    lualine_c = { diagnostics, filename},
+    lualine_c = { diagnostics, filename },
     lualine_x = { 'diff', filetype },
     lualine_y = { location },
     lualine_z = { "progress" },
@@ -219,11 +217,11 @@ require('lualine').setup {
 require('telescope').setup {
   extensions = {
     fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
+      fuzzy = true, -- false will only do exact matching
+      override_generic_sorter = true, -- override the generic sorter
+      override_file_sorter = true, -- override the file sorter
+      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+      -- the default case_mode is "smart_case"
     }
   }
 }
@@ -234,6 +232,10 @@ require("telescope").load_extension("recent_files")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_localrmdir = 'rm -rf'
+
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   view = {
@@ -254,8 +256,8 @@ require("nvim-tree").setup({
 
 -- Plugins setups
 -----------------
-local cmp = require'cmp'
-require("which-key").setup { }
+local cmp = require 'cmp'
+require("which-key").setup {}
 local wk = require("which-key")
 
 wk.register({
@@ -269,26 +271,26 @@ wk.register({
   ["<leader>c"] = { "<cmd>Commentary<cr>", "Comment Lines" },
 })
 
-require'cmp'.setup {
+require 'cmp'.setup {
   snippet = {
-      expand = function(args)
-         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      end,
-    },
-     window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-    },
-     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }),
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs( -4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
   sources = {
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' },
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
     { name = 'path' },
     { name = "buffer" },
     { name = "nvim_lua" },
@@ -298,12 +300,12 @@ require'cmp'.setup {
 -- LSP
 ----------
 ---- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['clangd'].setup {
-    capabilities = capabilities
-  }
-  require'lspconfig'.lua_ls.setup { }
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+require('lspconfig')['clangd'].setup {
+  capabilities = capabilities
+}
+require 'lspconfig'.lua_ls.setup {}
 require("mason").setup()
 -- require("mason-lspconfig").setup()
 -- local servers = { 'pyright', 'lua_ls' }
