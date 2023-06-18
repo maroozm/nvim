@@ -159,7 +159,7 @@ vim.g.nord_bold = true
 -- Load the colorscheme
 require('nord').set()
 
-local colorscheme = "enfocado"
+local colorscheme = "darkplus"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -200,7 +200,7 @@ require('lualine').setup {
     section_separators   = { left = "", right = "" },
     disabled_filetypes   = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme                = 'enfocado'
+    theme                = 'darkplus'
   },
   sections = {
     lualine_a = { "mode" },
@@ -240,11 +240,6 @@ require("nvim-tree").setup({
   sort_by = "case_sensitive",
   view = {
     width = 30,
-    mappings = {
-      list = {
-        { key = "u", action = "dir_up" },
-      },
-    },
   },
   renderer = {
     group_empty = true,
