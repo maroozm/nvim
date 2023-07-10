@@ -104,15 +104,14 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 --themes
-Plug 'shaunsingh/nord.nvim'
 Plug "lunarvim/darkplus.nvim"
 Plug "getomni/neovim"
-Plug "olivercederborg/poimandres.nvim"
 Plug "lunarvim/lunar.nvim"
-Plug "gs/muon-dark"
+Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'rktjmp/lush.nvim'
 Plug 'rockyzhang24/arctic.nvim'
-Plug 'wuelnerdotexe/vim-enfocado'
+Plug 'kvrohit/mellow.nvim'
+
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
@@ -133,6 +132,7 @@ Plug "hrsh7th/cmp-nvim-lua"
 --comment
 Plug 'numToStr/Comment.nvim'
 --lsp
+--Plug('j-hui/fidget.nvim', {'tag': 'legacy' })
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
@@ -149,29 +149,32 @@ vim.call('plug#end')
 -- Colorscheme
 --------------
 -- Example config in lua
-vim.g.nord_contrast = true
-vim.g.nord_borders = false
-vim.g.nord_disable_background = false
-vim.g.nord_italic = false
-vim.g.nord_uniform_diff_background = true
-vim.g.nord_bold = true
+-- vim.g.nord_contrast = true
+-- vim.g.nord_borders = false
+-- vim.g.nord_disable_background = false
+-- vim.g.nord_italic = false
+-- vim.g.nord_uniform_diff_background = true
+-- vim.g.nord_bold = true
+vim.g.enfocado_style = "neon"
+vim.g.apprentice_contrast_dark = "hard"
 
 -- Load the colorscheme
-require('nord').set()
+-- require('nord').set()
 
-local colorscheme = "darkplus"
+local colorscheme = "enfocado"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
   return
 end
-require('poimandres').setup {
-  bold_vert_split = false, -- use bold vertical separators
-  dim_nc_background = false, -- dim 'non-current' window backgrounds
-  disable_background = false, -- disable background
-  disable_float_background = false, -- disable background for floats
-  disable_italics = false, -- disable italics
-}
+-- require('poimandres').setup {
+--   bold_vert_split = false, -- use bold vertical separators
+--   dim_nc_background = false, -- dim 'non-current' window backgrounds
+--   disable_background = false, -- disable background
+--   disable_float_background = false, -- disable background for floats
+--   disable_italics = false, -- disable italics
+-- }
+
 
 -- Lualine
 ----------
@@ -200,7 +203,7 @@ require('lualine').setup {
     section_separators   = { left = "", right = "" },
     disabled_filetypes   = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme                = 'darkplus'
+    theme                = 'mellow'
   },
   sections = {
     lualine_a = { "mode" },
@@ -295,13 +298,49 @@ require 'cmp'.setup {
 -- LSP
 ----------
 ---- Set up lspconfig.
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-require('lspconfig')['clangd'].setup {
-  capabilities = capabilities
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
+local servers = {
+  -- clangd = {},
+  -- gopls = {},
+  -- pyright = {},
+  -- rust_analyzer = {},
+  -- tsserver = {},
+
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+  },
 }
-require 'lspconfig'.lua_ls.setup {}
-require("mason").setup()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+require'mason'.setup{}
+
+-- Ensure the servers above are installed
+local mason_lspconfig = require 'mason-lspconfig'
+
+mason_lspconfig.setup {
+  ensure_installed = vim.tbl_keys(servers),
+}
+
+mason_lspconfig.setup_handlers {
+  function(server_name)
+    require('lspconfig')[server_name].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = servers[server_name],
+    }
+  end,
+}
+vim.diagnostic.config({ virtual_text = false })
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+-- require('lspconfig')['clangd'].setup {
+--   capabilities = capabilities
+-- }
+-- require 'lspconfig'.lua_ls.setup {}
+-- -- require"fidget".setup{}
 -- require("mason-lspconfig").setup()
 -- local servers = { 'pyright', 'lua_ls' }
 -- for _, lsp in pairs(servers) do
