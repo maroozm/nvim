@@ -161,7 +161,7 @@ vim.g.apprentice_contrast_dark = "hard"
 -- Load the colorscheme
 -- require('nord').set()
 
-local colorscheme = "enfocado"
+local colorscheme = "darkplus"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -203,7 +203,7 @@ require('lualine').setup {
     section_separators   = { left = "", right = "" },
     disabled_filetypes   = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme                = 'mellow'
+    theme                = 'arctic'
   },
   sections = {
     lualine_a = { "mode" },
