@@ -111,7 +111,9 @@ Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'rktjmp/lush.nvim'
 Plug 'rockyzhang24/arctic.nvim'
 Plug 'kvrohit/mellow.nvim'
-
+Plug 'LunarVim/primer.nvim'
+--indentline
+Plug 'lukas-reineke/indent-blankline.nvim'
 --misc
 Plug "junegunn/vim-plug"
 Plug "lewis6991/impatient.nvim"
@@ -161,7 +163,7 @@ vim.g.apprentice_contrast_dark = "hard"
 -- Load the colorscheme
 -- require('nord').set()
 
-local colorscheme = "darkplus"
+local colorscheme = "primer_dark"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 if not status_ok then
   vim.notify("colorscheme " .. colorscheme .. " not found!")
@@ -203,14 +205,14 @@ require('lualine').setup {
     section_separators   = { left = "", right = "" },
     disabled_filetypes   = { "alpha", "dashboard" },
     always_divide_middle = true,
-    theme                = 'arctic'
+    theme                = 'primer_dark'
   },
   sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch" },
-    lualine_c = { diagnostics, filename },
-    lualine_x = { 'diff', filetype },
-    lualine_y = { location },
+    lualine_c = { 'diagnostics', 'filename' },
+    lualine_x = { 'diff', 'filetype' },
+    lualine_y = { 'location' },
     lualine_z = { "progress" },
   },
 }
@@ -334,25 +336,9 @@ mason_lspconfig.setup_handlers {
   end,
 }
 vim.diagnostic.config({ virtual_text = false })
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- require('lspconfig')['clangd'].setup {
---   capabilities = capabilities
--- }
--- require 'lspconfig'.lua_ls.setup {}
--- -- require"fidget".setup{}
--- require("mason-lspconfig").setup()
--- local servers = { 'pyright', 'lua_ls' }
--- for _, lsp in pairs(servers) do
---     require('lspconfig')[lsp].setup {
---         on_attach = on_attach,
---         flags = {
---           debounce_text_changes = 150,
---         }
---     }
--- end
 
--- Keymaps
+
+  -- Keymaps
 ----------
 local opts = { noremap = true, silent = true }
 -- vim.keymap.set('n', '<leader>ff', '[[<cmd>Telescope find_files<cr>]]', opts)
