@@ -144,6 +144,8 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = vim.fn['make'] })
 Plug 'smartpde/telescope-recent-files'
+--copilot
+Plug 'github/copilot.vim'
 
 Plug 'rebelot/heirline.nvim'
 vim.call('plug#end')
