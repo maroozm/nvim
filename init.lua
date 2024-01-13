@@ -208,51 +208,57 @@ vim.diagnostic.config({ virtual_text = false })
 
 -- toggleterm
 require("toggleterm").setup {
- size = 20,
-    open_mapping = [[<c-\>]],
-    hide_numbers = true, -- hide the number column in toggleterm buffers
-    shade_filetypes = {},
-    shade_terminals = true,
-    shading_factor = 2, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
-    start_in_insert = true,
-    insert_mappings = true, -- whether or not the open mapping applies in insert mode
-    persist_size = false,
-    direction = "float",
-    close_on_exit = true, -- close the terminal window when the process exits
-    shell = nil, -- change the default shell
-    float_opts = {
-      border = "rounded",
-      winblend = 0,
-      highlights = {
-        border = "Normal",
-        background = "Normal",
-      },
+  size = 20,
+  open_mapping = [[<c-\>]],
+  hide_numbers = true, -- hide the number column in toggleterm buffers
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = 2, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+  start_in_insert = true,
+  insert_mappings = true, -- whether or not the open mapping applies in insert mode
+  persist_size = false,
+  direction = "float",
+  close_on_exit = true, -- close the terminal window when the process exits
+  shell = nil, -- change the default shell
+  float_opts = {
+    border = "rounded",
+    winblend = 0,
+    highlights = {
+      border = "Normal",
+      background = "Normal",
     },
-    winbar = {
-      enabled = true,
-      name_formatter = function(term) --  term: Terminal
-        return term.count
-      end,
-    },
+  },
+  winbar = {
+    enabled = true,
+    name_formatter = function(term) --  term: Terminal
+      return term.count
+    end,
+  },
 }
 
 --navic
 local icons = require "user.icons"
-  require("nvim-navic").setup {
-    icons = icons.kind,
-    highlight = true,
-    lsp = {
-      auto_attach = true,
-    },
-    click = true,
-    separator = " " .. icons.ui.ChevronRight .. " ",
-    depth_limit = 0,
-    depth_limit_indicator = "..",
-  }
+require("nvim-navic").setup {
+  icons = icons.kind,
+  highlight = true,
+  lsp = {
+    auto_attach = true,
+  },
+  click = true,
+  separator = " " .. icons.ui.ChevronRight .. " ",
+  depth_limit = 0,
+  depth_limit_indicator = "..",
+}
 require("breadcrumbs").setup {}
 
+require'nvim-treesitter.configs'.setup{
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "elixir", "heex", "javascript", "html" },
+  sync_install = false,
+  highlight = { enable = true },
+  indent = { enable = true },  
+}
 
-  -- Keymaps
+-- Keymaps
 ----------
 local opts = { noremap = true, silent = true }
 -- vim.keymap.set('n', '<leader>ff', '[[<cmd>Telescope find_files<cr>]]', opts)
