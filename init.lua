@@ -35,7 +35,7 @@ vim.loader.enable()
 
 -- Options
 ----------
-require "options"
+require "user.options"
 
 -- Plugins
 -- -------
@@ -98,10 +98,10 @@ Plug 'rebelot/heirline.nvim'
 vim.call('plug#end')
 
 
-require "colorscheme"
-require "lualine"
-require "telescope"
-require "null-ls"
+require "user.colorscheme"
+require "user.lualine"
+require "user.telescope"
+require "user.null-ls"
 -- Netrw config
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -237,7 +237,7 @@ require("toggleterm").setup {
 }
 
 --navic
-local icons = require "icons"
+local icons = require "user.icons"
   require("nvim-navic").setup {
     icons = icons.kind,
     highlight = true,

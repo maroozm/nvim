@@ -1,6 +1,6 @@
 -- Telescope config
 --------------
-local icons = require "icons"
+local icons = require "user.icons"
 local actions = require "telescope.actions"
 require('telescope').setup {
       defaults = {
