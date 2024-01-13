@@ -91,6 +91,8 @@ Plug 'akinsho/toggleterm.nvim'
 --winbar
 Plug 'SmiteshP/nvim-navic'
 Plug 'LunarVim/breadcrumbs.nvim'
+--null-ls
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 Plug 'rebelot/heirline.nvim'
 vim.call('plug#end')
@@ -99,6 +101,7 @@ vim.call('plug#end')
 require "colorscheme"
 require "lualine"
 require "telescope"
+require "null-ls"
 -- Netrw config
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
