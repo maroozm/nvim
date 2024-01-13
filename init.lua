@@ -31,6 +31,8 @@ end
 local init_lua_path = vim.fn.stdpath('config') .. '/init.lua'
 addAutocommand('BufWritePost', init_lua_path, function() dofile(init_lua_path) end)
 
+vim.loader.enable()
+
 -- Options
 ----------
 local options = {
@@ -105,12 +107,8 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 --themes
 Plug "lunarvim/darkplus.nvim"
-Plug "getomni/neovim"
 Plug "lunarvim/lunar.nvim"
-Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'rktjmp/lush.nvim'
-Plug 'rockyzhang24/arctic.nvim'
-Plug 'kvrohit/mellow.nvim'
 Plug 'LunarVim/primer.nvim'
 --indentline
 Plug 'lukas-reineke/indent-blankline.nvim'
@@ -127,6 +125,7 @@ Plug "lewis6991/gitsigns.nvim"
 Plug "L3MON4D3/LuaSnip"
 Plug "hrsh7th/nvim-cmp"
 Plug "hrsh7th/cmp-buffer"
+Plug 'kvrohit/mellow.nvim'
 Plug "hrsh7th/cmp-path"
 Plug 'hrsh7th/cmp-cmdline'
 Plug "saadparwaiz1/cmp_luasnip"
@@ -146,6 +145,11 @@ Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = vim.fn['make'] })
 Plug 'smartpde/telescope-recent-files'
 --copilot
 Plug 'github/copilot.vim'
+--toggleterm
+Plug 'akinsho/toggleterm.nvim'
+--winbar
+Plug 'SmiteshP/nvim-navic'
+Plug 'LunarVim/breadcrumbs.nvim'
 
 Plug 'rebelot/heirline.nvim'
 vim.call('plug#end')
@@ -338,6 +342,51 @@ mason_lspconfig.setup_handlers {
   end,
 }
 vim.diagnostic.config({ virtual_text = false })
+
+-- toggleterm
+require("toggleterm").setup {
+ size = 20,
+    open_mapping = [[<c-\>]],
+    hide_numbers = true, -- hide the number column in toggleterm buffers
+    shade_filetypes = {},
+    shade_terminals = true,
+    shading_factor = 2, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+    start_in_insert = true,
+    insert_mappings = true, -- whether or not the open mapping applies in insert mode
+    persist_size = false,
+    direction = "float",
+    close_on_exit = true, -- close the terminal window when the process exits
+    shell = nil, -- change the default shell
+    float_opts = {
+      border = "rounded",
+      winblend = 0,
+      highlights = {
+        border = "Normal",
+        background = "Normal",
+      },
+    },
+    winbar = {
+      enabled = true,
+      name_formatter = function(term) --  term: Terminal
+        return term.count
+      end,
+    },
+}
+
+--navic
+local icons = require "icons"
+  require("nvim-navic").setup {
+    icons = icons.kind,
+    highlight = true,
+    lsp = {
+      auto_attach = true,
+    },
+    click = true,
+    separator = " " .. icons.ui.ChevronRight .. " ",
+    depth_limit = 0,
+    depth_limit_indicator = "..",
+  }
+require("breadcrumbs").setup {}
 
 
   -- Keymaps
